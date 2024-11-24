@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Note a inclusão de Routes
 import "./App.css";
+import axios from "axios";
+
 
 import Tasks from "./components/Tasks";
 import AddTask from "./components/AddTask";
@@ -19,18 +21,24 @@ const App = () => {
       id: "2",
       title: "Ler Livros",
       completed: false,
-    },
-    {
-      id: "3",
-      title: "Aprender Inglês",
-      completed: false,
-    },
-    {
-      id: "4",
-      title: "Lavar Louça",
-      completed: false,
-    },
+    }
   ]);
+
+  //esse bloco de código é executado sempre que uma das variasveis observadas mudar
+  //tambem é executado uma vez quando o componente é montado
+  //lista de dependências
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const {data} = await axios.get(
+        "https://jsonplaceholder.typicode.com/todos?_limit=10"
+      );
+
+      setTasks(data);
+      
+    };
+
+    fetchTasks();
+  }, []);
 
   const handleTaskClick = (taskId) => {
     const newTasks = tasks.map((task) => {
@@ -78,8 +86,8 @@ const App = () => {
               </>
             }
           />
-          <Route path="/:taskTitle" element={
-            <TaskDetails />
+          <Route path="/:taskTitle" exact Component={
+            TaskDetails 
           }/>
         </Routes>
       </div>
