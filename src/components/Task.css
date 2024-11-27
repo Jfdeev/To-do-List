@@ -23,5 +23,9 @@
     margin: 0 5px;
 }
 
-
+.buttons-container{
+    width: 30%;
+    display: flex;
+    justify-content: flex-end;
+}
 
